@@ -1,5 +1,5 @@
 import React, { useReducer, useContext } from 'react';
-import { CLEAR_ALERT, DISPLAY_ALERT, REGISTER_USER_BEGIN, REGISTER_USER_SUCCESS, REGISTER_USER_ERROR, LOGIN_USER_BEGIN, LOGIN_USER_ERROR, LOGIN_USER_SUCCESS,SETUP_USER_BEGIN,SETUP_USER_ERROR,SETUP_USER_SUCCESS} from './actions';
+import { CLEAR_ALERT, DISPLAY_ALERT, REGISTER_USER_BEGIN, REGISTER_USER_SUCCESS, REGISTER_USER_ERROR, LOGIN_USER_BEGIN, LOGIN_USER_ERROR, LOGIN_USER_SUCCESS,SETUP_USER_BEGIN,SETUP_USER_ERROR,SETUP_USER_SUCCESS, TOGGLE_SIDEBAR, LOGOUT_USER} from './actions';
 import reducer from './reducer';
 import axios from 'axios';
 
@@ -18,6 +18,7 @@ export const initialState = {
   token: token,
   userLocation: userLocation || '',
   jobLocation: userLocation || '',
+  showSidebar: false,
 };
 const AppContext = React.createContext();
 const AppProvider = ({ children }) => {
@@ -108,6 +109,13 @@ const setupUser = async ({currentUser,endPoint,alertText}) => {
   }
   clearAlert();
 }
+const toggleSidebar = () => {
+  dispatch({type: TOGGLE_SIDEBAR})
+}
+const logoutUser = () => {
+  dispatch({type: LOGOUT_USER})
+  removeUserFromLocalStorage()
+}
 
   return (
     <AppContext.Provider
@@ -117,6 +125,8 @@ const setupUser = async ({currentUser,endPoint,alertText}) => {
         registerUser,
         loginUser,
         setupUser,
+        toggleSidebar,
+        logoutUser,
       }}
       >
         {children}
